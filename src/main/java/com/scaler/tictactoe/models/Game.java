@@ -2,6 +2,10 @@ package com.scaler.tictactoe.models;
 import com.scaler.tictactoe.Exceptions.DuplicateSymbolException;
 import com.scaler.tictactoe.Exceptions.InvalidBotCountException;
 import com.scaler.tictactoe.Exceptions.InvalidPlayerCountException;
+import com.scaler.tictactoe.WinningStrategies.gameWinningStrategy.ColumnWinningStrategy;
+import com.scaler.tictactoe.WinningStrategies.gameWinningStrategy.DiagonalWinningStrategy;
+import com.scaler.tictactoe.WinningStrategies.gameWinningStrategy.GameWinningStartegy;
+import com.scaler.tictactoe.WinningStrategies.gameWinningStrategy.RowWinningStrategy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,21 +18,28 @@ public class Game {
     private List<Move> moves;
     private Player winner;
     private int nextPlayerIndex;
+    private GameState gameState;
+    private  List<GameWinningStartegy> winningStrategies;
 
-//    public Game(Board board, List<Player> players, List<Move> moves, Player winner, int nextPlayerIndex) {
-//        this.board = board;
-//        this.players = players;
-//        this.moves = moves;
-//        this.winner = winner;
-//        this.nextPlayerIndex = nextPlayerIndex;
-//    }
-    private Game(int dimension, List<Player> players){
+
+    private Game(int dimension, List<Player> players, List<GameWinningStartegy> winningStrategies){
         this.board = new Board(dimension);
         this.players = players;
         this.moves = new ArrayList<>();
         this.nextPlayerIndex = 0;
+        this.gameState = GameState.INPROGRESS;
+        this.winningStrategies = winningStrategies;
 
     }
+
+    public List<GameWinningStartegy> getWinningStrategies() {
+        return winningStrategies;
+    }
+
+    public void setWinningStrategies(List<GameWinningStartegy> winningStrategies) {
+        this.winningStrategies = winningStrategies;
+    }
+
     public static Builder getBuilder(){
         return new Builder();
     }
@@ -72,8 +83,60 @@ public class Game {
     public void setNextPlayerIndex(int nextPlayerIndex) {
         this.nextPlayerIndex = nextPlayerIndex;
     }
+
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
+
     public void displayBoard(){
         board.printBoard();
+    }
+
+    public boolean validateMove(Move move, Board board){
+        int row = move.getCell().getRow();
+        int col = move.getCell().getCol();
+
+        Cell cell = board.getBoard().get(row).get(col);
+        return row >= 0 && row <= board.getSize() &&
+                col >= 0 && col <= board.getSize() &&
+                cell.isEmpty();
+    }
+
+    public void makeMove(){
+        Player currentPlayer = players.get(nextPlayerIndex);
+        System.out.println("This is "+ currentPlayer.getName() + "'s turn");
+        Move move = currentPlayer.makeMove(board);
+        //validate if cell state is empty or not if empty on player can place the symbol
+        validateMove(move,board);
+        //if move is valid place the symbol on board
+        int row = move.getCell().getRow();
+        int col = move.getCell().getCol();
+        Cell cell = board.getBoard().get(row).get(col);
+        cell.setPlayer(currentPlayer);
+        cell.setCellState(CellState.FILLED);
+
+        Move finalMove = new Move(cell, currentPlayer);
+        nextPlayerIndex += 1;
+        nextPlayerIndex %= players.size();
+
+        //check the winner
+        if(checkWinner(board, finalMove)){
+            gameState = GameState.WINNER;
+            winner = currentPlayer;
+        }else if(moves.size() == board.getSize() * board.getSize()){
+            gameState = GameState.DRAW;
+        }
+    }
+    private boolean checkWinner(Board board, Move move){
+        //check all the game winning strategies
+        for(GameWinningStartegy winningStartegy : winningStrategies){
+            if(winningStartegy.checkWinner(board,move)) return true;
+        }
+        return false;
     }
     public static class Builder{
         private int dimension;
@@ -137,7 +200,8 @@ public class Game {
         }
         public Game Build() throws InvalidPlayerCountException, InvalidBotCountException, DuplicateSymbolException {
             validateGame(dimension,players);
-            return new Game(dimension, players);
+            return new Game(dimension, players, List.of(new RowWinningStrategy()
+            , new ColumnWinningStrategy(), new DiagonalWinningStrategy()));
         }
     }
 }

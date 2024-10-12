@@ -18,7 +18,7 @@ public class Client {
         GameController gameController = new GameController();
         List<Player> players = new ArrayList<>();
         players.add(
-                new Player(1L, "Sandhya", PlayerType.BOT, new Symbol('X'))
+                new Player(1L, "Sandhya", PlayerType.HUMAN, new Symbol('X'))
         );
         players.add(
                 new Bot(2L, "Bot",PlayerType.BOT, new Symbol('O'), BotDifficultyLevel.EASY)
@@ -27,6 +27,19 @@ public class Client {
                 3,
                 players
         );
-        gameController.displayBoard(game) ;
+
+
+        while(gameController.getGameState(game).equals(GameState.INPROGRESS)){
+            gameController.displayBoard(game) ;
+            gameController.makeMove(game);
+        }
+        if(gameController.getGameState(game).equals(GameState.DRAW)){
+            gameController.displayBoard(game) ;
+            System.out.println("Game has been draw Please Play again");
+
+        }else{
+            gameController.displayBoard(game) ;
+            System.out.println(gameController.getWinner(game).getName() + " has won the game Congratulations!");
+        }
     }
 }

@@ -40,7 +40,7 @@ public class Board {
                 if(cell.isEmpty()){
                     System.out.print("|  |");
                 }else{
-                    System.out.println("| " + cell.getPlayer().getPlayerSymbol().getSym() + " |");
+                    System.out.print("| " + cell.getPlayer().getPlayerSymbol().getSym() + " |");
                 }
             }
             System.out.println();

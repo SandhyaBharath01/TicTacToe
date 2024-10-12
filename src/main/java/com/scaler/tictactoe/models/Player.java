@@ -7,12 +7,14 @@ public class Player {
     private String name;
     private PlayerType playerType;
     private Symbol playerSymbol;
+    private Scanner scanner;
 
     public Player(Long id, String name, PlayerType playerType, Symbol playerSymbol) {
         this.id = id;
         this.name = name;
         this.playerType = playerType;
         this.playerSymbol = playerSymbol;
+        scanner = new Scanner(System.in);
     }
 
     public Long getId() {
@@ -45,5 +47,15 @@ public class Player {
 
     public void setPlayerSymbol(Symbol playerSymbol) {
         this.playerSymbol = playerSymbol;
+    }
+
+    public Move makeMove(Board board) {
+        System.out.println("Please enter row number");
+        int row = scanner.nextInt();
+
+        System.out.println("Please enter column number");
+        int col = scanner.nextInt();
+
+        return new Move(new Cell(row,col), this);
     }
 }
