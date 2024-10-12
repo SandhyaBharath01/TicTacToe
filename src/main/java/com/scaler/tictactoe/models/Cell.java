@@ -4,14 +4,14 @@ public class Cell {
     private int row;
     private int col;
     private CellState cellState;
-    private Symbol symbol;
+    private Player player;
 
-    public Cell(int row, int col, CellState cellState, Symbol symbol) {
+    public Cell(int row, int col) {
         this.row = row;
         this.col = col;
-        this.cellState = cellState.EMPTY;
-        this.symbol = symbol;
+        this.cellState = CellState.EMPTY;
     }
+
 
     public int getRow() {
         return row;
@@ -37,11 +37,14 @@ public class Cell {
         this.cellState = cellState;
     }
 
-    public Symbol getSymbol() {
-        return symbol;
+    public Player getPlayer() {
+        return player;
     }
 
-    public void setSymbol(Symbol symbol) {
-        this.symbol = symbol;
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+    public boolean isEmpty(){
+        return this.cellState.equals(CellState.EMPTY);
     }
 }

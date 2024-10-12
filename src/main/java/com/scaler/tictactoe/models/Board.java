@@ -1,14 +1,22 @@
 package com.scaler.tictactoe.models;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
     private int size;
-    private List<List<Cell>> grid;
+    private List<List<Cell>> board;
 
-    public Board(int size, List<List<Cell>> grid) {
-        this.size = size;
-        this.grid = grid;
+    public Board(int dimension) {
+        this.size = dimension;
+//        this.board = board;
+        board = new ArrayList<>();
+        for(int i=0; i<size; i++){
+            board.add(new ArrayList<>());
+            for(int j=0; j<size; j++){
+                board.get(i).add(new Cell(i, j));
+            }
+        }
     }
 
     public int getSize() {
@@ -19,11 +27,23 @@ public class Board {
         this.size = size;
     }
 
-    public List<List<Cell>> getGrid() {
-        return grid;
+    public List<List<Cell>> getBoard() {
+        return board;
     }
 
-    public void setGrid(List<List<Cell>> grid) {
-        this.grid = grid;
+    public void setBoard(List<List<Cell>> board) {
+        this.board = board;
+    }
+    public void printBoard(){
+        for(List<Cell> cells : board){
+            for(Cell cell : cells){
+                if(cell.isEmpty()){
+                    System.out.print("|  |");
+                }else{
+                    System.out.println("| " + cell.getPlayer().getPlayerSymbol().getSym() + " |");
+                }
+            }
+            System.out.println();
+        }
     }
 }
