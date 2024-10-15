@@ -56,6 +56,6 @@ public class Player {
         System.out.println("Please enter column number");
         int col = scanner.nextInt();
 
-        return new Move(new Cell(row,col), this);
+        return new Move(new Cell(row,col),this);
     }
 }

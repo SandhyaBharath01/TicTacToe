@@ -23,14 +23,14 @@ public class GameController {
     public Player getWinner(Game game){
         return game.getWinner();
     }
-    public void undo(Game game){
-
-    }
     public void displayBoard(Game game){
         game.displayBoard();
     }
     public GameState getGameState(Game game){
         return game.getGameState();
+    }
+    public void undo(Game game){
+        game.undo();
     }
 
 }

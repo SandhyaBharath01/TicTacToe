@@ -34,4 +34,11 @@ public class DiagonalWinningStrategy implements GameWinningStartegy {
         }
         return false;
     }
+    @Override
+    public void handleundofeature(Board board, Move move){
+//        int left = move.getCell().getRow();
+//        int right = move.getCell().getCol();
+//        Symbol sym = move.getPlayer().getPlayerSymbol();
+//        leftDiagonalmap.get(left).put(sym,leftDiagonalmap.get(left).get(sym)-1);
+    }
 }

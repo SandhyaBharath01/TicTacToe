@@ -25,4 +25,10 @@ public class RowWinningStrategy implements GameWinningStartegy {
         }
         return  currentrowhm.get(symbol)==board.getSize();
     }
+    @Override
+    public void handleundofeature(Board board, Move move){
+        int row = move.getCell().getRow();
+        Symbol sym = move.getPlayer().getPlayerSymbol();
+        rowhm.get(row).put(sym,rowhm.get(row).get(sym)-1);
+    }
 }

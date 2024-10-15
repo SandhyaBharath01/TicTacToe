@@ -5,13 +5,22 @@ public class Cell {
     private int col;
     private CellState cellState;
     private Player player;
+    private Symbol sym;
 
     public Cell(int row, int col) {
         this.row = row;
         this.col = col;
         this.cellState = CellState.EMPTY;
+        this.sym = null;
     }
 
+    public Symbol getSym() {
+        return sym;
+    }
+
+    public void setSym(Symbol sym) {
+        this.sym = sym;
+    }
 
     public int getRow() {
         return row;
@@ -36,6 +45,14 @@ public class Cell {
     public void setCellState(CellState cellState) {
         this.cellState = cellState;
     }
+
+//    public Symbol getSym() {
+//        return sym;
+//    }
+//
+//    public void setSym(Symbol sym) {
+//        this.sym = sym;
+//    }
 
     public Player getPlayer() {
         return player;

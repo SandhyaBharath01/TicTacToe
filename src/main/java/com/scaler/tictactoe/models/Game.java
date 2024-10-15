@@ -138,6 +138,26 @@ public class Game {
         }
         return false;
     }
+    public void undo(){
+        if(moves.isEmpty()){
+            System.out.println("No moves are there to undo");
+            return;
+        }
+        Move lastmove = moves.get(moves.size()-1);
+        moves.remove(moves.size()-1);
+
+        lastmove.getCell().setCellState(CellState.EMPTY);
+        lastmove.getCell().setSym(null);
+
+        nextPlayerIndex--;
+        nextPlayerIndex = (nextPlayerIndex + players.size())%players.size();
+
+        for(GameWinningStartegy strategies : winningStrategies){
+            strategies.handleundofeature(board, lastmove);
+        }
+        setGameState(GameState.INPROGRESS);
+        setWinner(null);
+    }
     public static class Builder{
         private int dimension;
         private List<Player> players;

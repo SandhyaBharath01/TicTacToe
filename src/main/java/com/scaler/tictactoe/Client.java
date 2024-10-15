@@ -32,6 +32,13 @@ public class Client {
         while(gameController.getGameState(game).equals(GameState.INPROGRESS)){
             gameController.displayBoard(game) ;
             gameController.makeMove(game);
+            System.out.println("Do you want to make Undo");
+            String doundo = scn.nextLine();
+            if (doundo.equalsIgnoreCase("yes")) {
+                gameController.undo(game);
+                System.out.println("undo is done");
+                gameController.displayBoard(game);
+           }
         }
         if(gameController.getGameState(game).equals(GameState.DRAW)){
             gameController.displayBoard(game) ;

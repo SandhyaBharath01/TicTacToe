@@ -24,4 +24,10 @@ public class ColumnWinningStrategy implements GameWinningStartegy {
         }
         return  currentcolhm.get(symbol)== board.getSize();
     }
+    @Override
+    public void handleundofeature(Board board, Move move){
+        int col = move.getCell().getCol();
+        Symbol sym = move.getPlayer().getPlayerSymbol();
+        colhm.get(col).put(sym, colhm.get(col).get(sym)-1);
+    }
 }
